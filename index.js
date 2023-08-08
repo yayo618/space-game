@@ -1,7 +1,9 @@
-const canvas = document.querySelector('canvas')
+const canvas = document.getElementById('game')
 const c = canvas.getContext('2d')
-canvas.width = window.innerWidth
-canvas.height = window.innerHeight
+//canvas.width = window.innerWidth
+//canvas.height = window.innerHeight
+canvas.width = 800
+canvas.height = 600
 
 const gravity = 0.5
 
