@@ -4,15 +4,23 @@
     <meta charset="UTF-8">
     <title>chris</title>
     <style>
+        body{
+            margin:0;
+            background-color:black;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            height:50vh;
+        }
         #touchC{
-            position:relative;
-            top:850px;
+            position:absolute;
+            top:750px;
         }
     </style>
 </head>
 <body>
+    <canvas id="game"></canvas>
     <canvas id="touchC" style="border: solid red 1px"></canvas>
-    <canvas id="game" style="border: solid red 1px"></canvas>
     <script src="index.js"></script>
     <script src="touch-control.js"></script>
 </body>

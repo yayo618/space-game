@@ -4,7 +4,8 @@ const c = canvas.getContext('2d')
 //canvas.height = window.innerHeight
 canvas.width = 800
 canvas.height = 600
-
+var i_platform = new Image()
+i_platform.src = 'assets/platform.png'
 const gravity = 0.5
 
 class Player {
@@ -38,24 +39,28 @@ class Player {
 }
 
 class Platform {
-    constructor({x, y}) {
+    constructor({x, y}, img, width, height) {
         this.position = {x: x, y: y}
-        this.width = 200
-        this.height = 20
+        this.img = img
+        this.width = width
+        this.height = height
     }
     draw() {
+        /*
         c.fillStyle = 'blue'
         c.fillRect(this.position.x, this.position.y, this.width, this.height)
+        */
+        c.drawImage(this.img, this.position.x, this.position.y, this.width, this.height)
     }
 }
 
 const player = new Player()
 //const platform = new Platform()
 const platforms = [
-    new Platform({x: 200, y: 300}), 
-    new Platform({x: 500, y: 400}),
-    new Platform({x: 2000, y: 500}),
-    new Platform({x: 1500, y: 450})]
+    new Platform({x: 200, y: 300}, i_platform, 580, 125), 
+    new Platform({x: 500, y: 400}, i_platform, 580, 125),
+    new Platform({x: 1611, y: 500}, i_platform, 290, 62),
+    new Platform({x: 1900, y: 500}, i_platform, 290, 62)]
 const keys = {
     right: {pressed: false},
     left: {pressed: false}
@@ -66,11 +71,13 @@ let scrollOffset = 0
 function animate() {
     requestAnimationFrame(animate)
     c.clearRect(0,0,canvas.width, canvas.height)
-    player.update()
-//    platform.draw()
-    platforms.forEach( (platform) => {platform.draw()} )
+    c.fillStyle = 'white'
+    c.fillRect(0,0,canvas.width, canvas.height)
 
-    if (keys.right.pressed && player.position.x < 700) {player.velocity.x = 5}
+    platforms.forEach( (platform) => {platform.draw()} )
+    player.update()
+
+    if (keys.right.pressed && player.position.x < (700 - player.width)) {player.velocity.x = 5}
     else if (keys.left.pressed && player.position.x > 100) {player.velocity.x = -5}
     else {
         player.velocity.x = 0
