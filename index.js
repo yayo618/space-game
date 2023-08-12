@@ -6,6 +6,10 @@ canvas.width = 800
 canvas.height = 600
 var i_platform = new Image()
 i_platform.src = 'assets/platform.png'
+var i_bg = new Image()
+i_bg.src = 'assets/background.png'
+var i_hill = new Image()
+i_hill.src = 'assets/hill.png'
 const gravity = 0.5
 
 class Player {
@@ -46,26 +50,34 @@ class Platform {
         this.height = height
     }
     draw() {
-        /*
-        c.fillStyle = 'blue'
-        c.fillRect(this.position.x, this.position.y, this.width, this.height)
-        */
         c.drawImage(this.img, this.position.x, this.position.y, this.width, this.height)
+    }
+}
+
+class GenericObject extends Platform {
+    constructor({x, y}, img, width, height) {
+        super({x, y}, img, width, height)
     }
 }
 
 const player = new Player()
 //const platform = new Platform()
 const platforms = [
-    new Platform({x: 200, y: 300}, i_platform, 580, 125), 
-    new Platform({x: 500, y: 400}, i_platform, 580, 125),
+    new Platform({x: 100, y: 300}, i_platform, 580, 125), 
+    new Platform({x: 400, y: 400}, i_platform, 580, 125),
     new Platform({x: 1611, y: 500}, i_platform, 290, 62),
-    new Platform({x: 1900, y: 500}, i_platform, 290, 62)]
+    new Platform({x: 1900, y: 500}, i_platform, 290, 62),
+    new Platform({x: 1120, y: 300}, i_platform, 290, 62)]
+const genericObj = [
+    new GenericObject({x: -1, y: -1}, i_bg, 11643, 732),
+    new GenericObject({x: 0, y: 15}, i_hill, 550, 582),
+    new GenericObject({x: 1000, y: 15}, i_hill, 550, 582)
+]
+
 const keys = {
     right: {pressed: false},
     left: {pressed: false}
 }
-
 let scrollOffset = 0
 
 function animate() {
@@ -74,6 +86,7 @@ function animate() {
     c.fillStyle = 'white'
     c.fillRect(0,0,canvas.width, canvas.height)
 
+    genericObj.forEach( (obj) => {obj.draw()})
     platforms.forEach( (platform) => {platform.draw()} )
     player.update()
 
@@ -84,9 +97,11 @@ function animate() {
         if (keys.right.pressed) {
             scrollOffset += 5
             platforms.forEach( (platform) => {platform.position.x -= 5} )
+            genericObj.forEach( (obj) => {obj.position.x -= 3} )
         } else if (keys.left.pressed) {
             scrollOffset -= 5
             platforms.forEach( (platform) => {platform.position.x += 5} )
+            genericObj.forEach( (obj) => {obj.position.x += 3} )
         }
     }
 
