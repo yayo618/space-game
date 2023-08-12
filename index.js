@@ -35,10 +35,12 @@ class Player {
         this.position.x += this.velocity.x
         this.position.y += this.velocity.y
 
-        //this.velocity.y += gravity
+        this.velocity.y += gravity
+        /*
         if (this.position.y + this.height + this.velocity.y <= canvas.height)
         {this.velocity.y += gravity}
         else {this.velocity.y = 0}
+        */
     }
 }
 
@@ -60,25 +62,41 @@ class GenericObject extends Platform {
     }
 }
 
-const player = new Player()
-//const platform = new Platform()
-const platforms = [
+const keys = {
+    right: {pressed: false},
+    left: {pressed: false}
+}
+
+let player = new Player()
+let platforms = [
     new Platform({x: 100, y: 300}, i_platform, 580, 125), 
     new Platform({x: 400, y: 400}, i_platform, 580, 125),
     new Platform({x: 1611, y: 500}, i_platform, 290, 62),
     new Platform({x: 1900, y: 500}, i_platform, 290, 62),
     new Platform({x: 1120, y: 300}, i_platform, 290, 62)]
-const genericObj = [
+let genericObj = [
     new GenericObject({x: -1, y: -1}, i_bg, 11643, 732),
     new GenericObject({x: 0, y: 15}, i_hill, 550, 582),
     new GenericObject({x: 1000, y: 15}, i_hill, 550, 582)
 ]
-
-const keys = {
-    right: {pressed: false},
-    left: {pressed: false}
-}
 let scrollOffset = 0
+
+function init() {
+    player = new Player()
+    platforms = [
+        new Platform({x: 100, y: 300}, i_platform, 580, 125), 
+        new Platform({x: 400, y: 400}, i_platform, 580, 125),
+        new Platform({x: 1611, y: 500}, i_platform, 290, 62),
+        new Platform({x: 1900, y: 500}, i_platform, 290, 62),
+        new Platform({x: 1120, y: 300}, i_platform, 290, 62)]
+    genericObj = [
+        new GenericObject({x: -1, y: -1}, i_bg, 11643, 732),
+        new GenericObject({x: 0, y: 15}, i_hill, 550, 582),
+        new GenericObject({x: 1000, y: 15}, i_hill, 550, 582)
+    ]
+    scrollOffset = 0
+}
+
 
 function animate() {
     requestAnimationFrame(animate)
@@ -119,6 +137,14 @@ function animate() {
     if (scrollOffset > 1500) {
         c.font = '30px Arial'
         c.fillText('you win', 300, 300)
+    }
+    if (player.position.y > canvas.height) {
+        /*
+        c.font = '30px Arial'
+        c.fillText('you lose', 300, 300)
+        setTimeout(() => init(), 1000)
+        */
+        init()
     }
 }
 animate()
