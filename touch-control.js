@@ -1,3 +1,5 @@
+var orientacion = 'de';
+
 (function() {
 
   var Button, controller, display;
@@ -57,18 +59,26 @@
       if (this.buttons[0].active) {
 //        touchArr = true;
           player.velocity.y -= 2;
-      } else {
-//        touchArr = false;
       } 
-      if (this.buttons[1].active) {
+      else if (this.buttons[1].active) {
+          orientacion = 'iz';
           keys.left.pressed = true;
-      } else {
-          keys.left.pressed = false;
+   player.currentSprite = player.sprites.run.left;
       }
-      if (this.buttons[2].active) {
+      else if (this.buttons[2].active) {
+          orientacion = 'de';
           keys.right.pressed = true;
-      } else {
+   // if (keys.right.pressed) {player.currentSprite = player.sprites.run.right}
+   player.currentSprite = player.sprites.run.right;
+      } 
+      else {
+          keys.left.pressed = false;
           keys.right.pressed = false;
+          if (orientacion == 'iz') {
+   player.currentSprite = player.sprites.stand.left;
+          } else {
+   player.currentSprite = player.sprites.stand.right;
+          }
       }
     },
 

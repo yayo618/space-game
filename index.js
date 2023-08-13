@@ -12,6 +12,16 @@ var i_hill = new Image()
 i_hill.src = 'assets/hill.png'
 var i_smallT = new Image()
 i_smallT.src = 'assets/platformSmallTall.png'
+
+var i_sRL = new Image()
+var i_sRR = new Image()
+var i_sSL = new Image()
+var i_sSR = new Image()
+i_sRL.src = 'assets/spriteRunLeft.png'
+i_sRR.src = 'assets/spriteRunRight.png'
+i_sSL.src = 'assets/spriteSL_c.png'
+i_sSR.src = 'assets/spriteSR_c.png'
+
 const gravity = 0.5
 
 class Player {
@@ -25,15 +35,34 @@ class Player {
             x: 0,
             y: 1
         }
-        this.width = 30
-        this.height = 30
+        this.width = 128
+        this.height = 150
+        this.img = i_sSR
+        this.sprites = {stand: {right: i_sSR, left: i_sSL}, run: {right: i_sRR, left: i_sRL}}
+        this.currentSprite = this.sprites.stand.right
+        this.frames = 0
     }
 
     draw() {
+        /*
         c.fillStyle = 'red'
         c.fillRect(this.position.x, this.position.y, this.width, this.height)
+        */
+        c.drawImage(
+            this.currentSprite, 
+            341 * this.frames,
+            0,
+            341,
+            400,
+            this.position.x, 
+            this.position.y, 
+            this.width, 
+            this.height
+        )
     }
     update() {
+        this.frames ++
+        if (this.frames == 30) {this.frames = 0}
         this.draw()
         this.position.x += this.velocity.x
         this.position.y += this.velocity.y
@@ -96,8 +125,6 @@ function init() {
 function animate() {
     requestAnimationFrame(animate)
     c.clearRect(0,0,canvas.width, canvas.height)
-    c.fillStyle = 'white'
-    c.fillRect(0,0,canvas.width, canvas.height)
 
     genericObj.forEach( (obj) => {obj.draw()})
     platforms.forEach( (platform) => {platform.draw()} )
@@ -183,3 +210,4 @@ window.addEventListener('keyup', ({keyCode}) => {
             break
     }
 })
+

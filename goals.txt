@@ -10,3 +10,4 @@ parallax scroll
 death pits
 level creation
 fine tuning
+sprite creation
