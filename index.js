@@ -10,10 +10,13 @@ var i_bg = new Image()
 i_bg.src = 'assets/background.png'
 var i_hill = new Image()
 i_hill.src = 'assets/hill.png'
+var i_smallT = new Image()
+i_smallT.src = 'assets/platformSmallTall.png'
 const gravity = 0.5
 
 class Player {
     constructor() {
+        this.speed = 7
         this.position = {
             x: 110,
             y: 100
@@ -68,17 +71,8 @@ const keys = {
 }
 
 let player = new Player()
-let platforms = [
-    new Platform({x: 100, y: 300}, i_platform, 580, 125), 
-    new Platform({x: 400, y: 400}, i_platform, 580, 125),
-    new Platform({x: 1611, y: 500}, i_platform, 290, 62),
-    new Platform({x: 1900, y: 500}, i_platform, 290, 62),
-    new Platform({x: 1120, y: 300}, i_platform, 290, 62)]
-let genericObj = [
-    new GenericObject({x: -1, y: -1}, i_bg, 11643, 732),
-    new GenericObject({x: 0, y: 15}, i_hill, 550, 582),
-    new GenericObject({x: 1000, y: 15}, i_hill, 550, 582)
-]
+let platforms = []
+let genericObj = []
 let scrollOffset = 0
 
 function init() {
@@ -86,9 +80,11 @@ function init() {
     platforms = [
         new Platform({x: 100, y: 300}, i_platform, 580, 125), 
         new Platform({x: 400, y: 400}, i_platform, 580, 125),
-        new Platform({x: 1611, y: 500}, i_platform, 290, 62),
-        new Platform({x: 1900, y: 500}, i_platform, 290, 62),
-        new Platform({x: 1120, y: 300}, i_platform, 290, 62)]
+        new Platform({x: 1610, y: 370}, i_smallT, 291, 227),
+        new Platform({x: 1611, y: 535}, i_platform, 290, 62),
+        new Platform({x: 1900, y: 535}, i_platform, 290, 62),
+        new Platform({x: 1120, y: 300}, i_platform, 290, 62)
+    ]
     genericObj = [
         new GenericObject({x: -1, y: -1}, i_bg, 11643, 732),
         new GenericObject({x: 0, y: 15}, i_hill, 550, 582),
@@ -96,7 +92,6 @@ function init() {
     ]
     scrollOffset = 0
 }
-
 
 function animate() {
     requestAnimationFrame(animate)
@@ -108,18 +103,18 @@ function animate() {
     platforms.forEach( (platform) => {platform.draw()} )
     player.update()
 
-    if (keys.right.pressed && player.position.x < (700 - player.width)) {player.velocity.x = 5}
-    else if (keys.left.pressed && player.position.x > 100) {player.velocity.x = -5}
+    if (keys.right.pressed && player.position.x < (700 - player.width)) {player.velocity.x = player.speed}
+    else if (keys.left.pressed && player.position.x > 100) {player.velocity.x = -player.speed}
     else {
         player.velocity.x = 0
         if (keys.right.pressed) {
-            scrollOffset += 5
-            platforms.forEach( (platform) => {platform.position.x -= 5} )
-            genericObj.forEach( (obj) => {obj.position.x -= 3} )
+            scrollOffset += player.speed
+            platforms.forEach( (platform) => {platform.position.x -= player.speed} )
+            genericObj.forEach( (obj) => {obj.position.x -= player.speed * 0.6} )
         } else if (keys.left.pressed) {
-            scrollOffset -= 5
-            platforms.forEach( (platform) => {platform.position.x += 5} )
-            genericObj.forEach( (obj) => {obj.position.x += 3} )
+            scrollOffset -= player.speed
+            platforms.forEach( (platform) => {platform.position.x += player.speed} )
+            genericObj.forEach( (obj) => {obj.position.x += player.speed * 0.6} )
         }
     }
 
@@ -147,6 +142,8 @@ function animate() {
         init()
     }
 }
+
+init()
 animate()
 
 window.addEventListener('keydown', ({keyCode}) => {
