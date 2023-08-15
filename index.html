@@ -7,20 +7,21 @@
         body{
             margin:0;
             background-color:black;
+        }
+        div{
             display:flex;
             align-items:center;
             justify-content:center;
-            height:50vh;
-        }
-        #touchC{
-            position:absolute;
-            top:750px;
         }
     </style>
 </head>
 <body>
+    <div>
     <canvas id="game"></canvas>
-    <canvas id="touchC" style="border: solid red 1px"></canvas>
+    </div>
+    <div id="centrarT">
+    <canvas id="touchC"></canvas>
+    </div>
     <script src="index.js"></script>
     <script src="touch-control.js"></script>
 </body>

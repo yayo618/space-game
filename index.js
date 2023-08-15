@@ -19,8 +19,8 @@ var i_sSL = new Image()
 var i_sSR = new Image()
 i_sRL.src = 'assets/sRunL.png'
 i_sRR.src = 'assets/sRunR.png'
-i_sSL.src = 'assets/sSL_c.png'
-i_sSR.src = 'assets/sSR_c.png'
+i_sSL.src = 'assets/sSL.png'
+i_sSR.src = 'assets/sSR.png'
 
 const gravity = 0.5
 
@@ -50,10 +50,10 @@ class Player {
         */
         c.drawImage(
             this.currentSprite, 
-            170.5 * this.frames,
+            128 * this.frames,
             0,
-            170.5,
-            200,
+            128,
+            150,
             this.position.x, 
             this.position.y, 
             this.width, 
