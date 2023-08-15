@@ -6,8 +6,6 @@ canvas.width = 800
 canvas.height = 600
 var i_platform = new Image()
 i_platform.src = 'assets/platform.png'
-var i_bg = new Image()
-i_bg.src = 'assets/background.png'
 var i_hill = new Image()
 i_hill.src = 'assets/hill.png'
 var i_smallT = new Image()
@@ -115,7 +113,6 @@ function init() {
         new Platform({x: 1120, y: 300}, i_platform, 290, 62)
     ]
     genericObj = [
-        new GenericObject({x: -1, y: -1}, i_bg, 11643, 732),
         new GenericObject({x: 0, y: 15}, i_hill, 550, 582),
         new GenericObject({x: 1000, y: 15}, i_hill, 550, 582)
     ]
@@ -125,6 +122,8 @@ function init() {
 function animate() {
     requestAnimationFrame(animate)
     c.clearRect(0,0,canvas.width, canvas.height)
+    c.fillStyle = '#124552'
+    c.fillRect(0,0, canvas.width, canvas.height)
 
     genericObj.forEach( (obj) => {obj.draw()})
     platforms.forEach( (platform) => {platform.draw()} )
