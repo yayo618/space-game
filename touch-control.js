@@ -39,26 +39,22 @@ function testButtons(target_touches) {
 
 
     if (buttons[0].active) {
-        orientacion = 'iz';
         keys.left.pressed = true;
-   player.currentSprite = player.sprites.run.left;
     } 
-    else if (buttons[1].active) {
-        orientacion = 'de';
+    if (buttons[1].active) {
         keys.right.pressed = true;
-   player.currentSprite = player.sprites.run.right;
     }
-    else if (buttons[2].active) {
-        player.velocity.y -= 2;
+    if (buttons[2].active) {
+        keys.jump.pressed = true;
     } 
-    else {
+    if (!buttons[0].active) {
         keys.left.pressed = false;
+    }
+    if (!buttons[1].active) {
         keys.right.pressed = false;
-          if (orientacion == 'iz') {
-   player.currentSprite = player.sprites.stand.left;
-          } else {
-   player.currentSprite = player.sprites.stand.right;
-          }
+    }
+    if (!buttons[2].active) {
+        keys.jump.pressed = false;
     }
 };
 

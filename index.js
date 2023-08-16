@@ -85,7 +85,8 @@ class GenericObject extends Platform {
 
 const keys = {
     right: {pressed: false},
-    left: {pressed: false}
+    left: {pressed: false},
+    jump: {pressed: false}
 }
 
 let player = new Player()
@@ -151,7 +152,8 @@ function animate() {
 
     if (scrollOffset > 1500) {
         c.font = '30px Arial'
-        c.fillText('you win', 300, 300)
+        c.fillStyle = 'red'
+        c.fillText('you win', 380, 300)
     }
     if (player.position.y > canvas.height) {
         /*
@@ -161,6 +163,7 @@ function animate() {
         */
         init()
     }
+    gestiona_s()
 }
 
 init()
@@ -172,19 +175,13 @@ window.addEventListener('keydown', ({keyCode}) => {
             //alert("left")
             keys.left.pressed = true
             break
-        case 83 :
-            //alert("down")
-            break
         case 68:
             //alert("right")
             keys.right.pressed = true
             break
-        case 39:
-            keys.right.pressed = true
-            break
         case 87 :
+            keys.jump.pressed = true
             //alert("up")
-            player.velocity.y -= 2
             break
     }
 })
@@ -194,18 +191,34 @@ window.addEventListener('keyup', ({keyCode}) => {
         case 65 :
             keys.left.pressed = false
             break
-        case 83 :
-            break
         case 68 :
             keys.right.pressed = false
             break
         case 87 :
-            //player.velocity.y -= 20
-            break
-        case 39:
-            keys.right.pressed = false
+            keys.jump.pressed = false
             break
     }
 })
 
 var orientacion = 'de'
+function gestiona_s () {
+    if (keys.jump.pressed) {
+        player.velocity.y -= 2
+    }
+
+    if (keys.left.pressed) {
+        orientacion = 'iz'
+        player.currentSprite = player.sprites.run.left
+    }
+    else if (keys.right.pressed) {
+        orientacion = 'de'
+        player.currentSprite = player.sprites.run.right
+    }
+    else if (!keys.left.pressed && !keys.right.pressed) {
+        if (orientacion == 'iz') {
+            player.currentSprite = player.sprites.stand.left;
+        } else if (orientacion == 'de') {
+            player.currentSprite = player.sprites.stand.right;
+        }
+    }
+}
