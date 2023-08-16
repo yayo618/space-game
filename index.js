@@ -42,10 +42,6 @@ class Player {
     }
 
     draw() {
-        /*
-        c.fillStyle = 'red'
-        c.fillRect(this.position.x, this.position.y, this.width, this.height)
-        */
         c.drawImage(
             this.currentSprite, 
             128 * this.frames,
@@ -66,11 +62,6 @@ class Player {
         this.position.y += this.velocity.y
 
         this.velocity.y += gravity
-        /*
-        if (this.position.y + this.height + this.velocity.y <= canvas.height)
-        {this.velocity.y += gravity}
-        else {this.velocity.y = 0}
-        */
     }
 }
 
@@ -154,7 +145,8 @@ function animate() {
             player.position.x + player.width >= platform.position.x &&
             player.position.x <= platform.position.x + platform.width
         ) 
-        {player.velocity.y = 0}
+        {player.velocity.y = 0
+        } 
     })
 
     if (scrollOffset > 1500) {
@@ -183,13 +175,16 @@ window.addEventListener('keydown', ({keyCode}) => {
         case 83 :
             //alert("down")
             break
-        case 68 :
+        case 68:
             //alert("right")
+            keys.right.pressed = true
+            break
+        case 39:
             keys.right.pressed = true
             break
         case 87 :
             //alert("up")
-            player.velocity.y -= 20
+            player.velocity.y -= 2
             break
     }
 })
@@ -207,6 +202,10 @@ window.addEventListener('keyup', ({keyCode}) => {
         case 87 :
             //player.velocity.y -= 20
             break
+        case 39:
+            keys.right.pressed = false
+            break
     }
 })
 
+var orientacion = 'de'
