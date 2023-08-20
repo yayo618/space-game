@@ -21,6 +21,9 @@ i_sSL.src = 'assets/sSL.png'
 i_sSR.src = 'assets/sSR.png'
 
 const gravity = 0.5
+const s_jump = new Audio()
+s_jump.src = 'sounds/cartoon-jump-6462.mp3'
+//const s_j = document.getElementById('audJ')
 
 class Player {
     constructor() {
@@ -164,38 +167,7 @@ function keyDownUp(event) {
 }
 window.addEventListener('keydown', keyDownUp)
 window.addEventListener('keyup', keyDownUp)
-/*
-window.addEventListener('keydown', ({keyCode}) => {
-    switch (keyCode) {
-        case 65 :
-            //alert("left")
-            keys.left.pressed = true
-            break
-        case 68:
-            //alert("right")
-            keys.right.pressed = true
-            break
-        case 87 :
-            keys.jump.pressed = true
-            //alert("up")
-            break
-    }
-})
 
-window.addEventListener('keyup', ({keyCode}) => {
-    switch (keyCode) {
-        case 65 :
-            keys.left.pressed = false
-            break
-        case 68 :
-            keys.right.pressed = false
-            break
-        case 87 :
-            keys.jump.pressed = false
-            break
-    }
-})
-*/
 function gestiona_m () {
     if (keys.right.pressed && player.position.x < (700 - player.width)) {player.velocity.x = player.speed}
     else if (
@@ -217,6 +189,7 @@ function gestiona_m () {
         if (player.grounded) {
             player.grounded = false
             player.velocity.y -= 13
+            s_jump.play()//sound
         }
     }
 }
