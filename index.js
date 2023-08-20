@@ -31,15 +31,15 @@ class Player {
         }
         this.velocity = {
             x: 0,
-            y: 1
+            y: 0
         }
         this.width = 128
         this.height = 150
-        this.img = i_sSR
         this.sprites = {stand: {right: i_sSR, left: i_sSL}, run: {right: i_sRR, left: i_sRL}}
         this.currentSprite = this.sprites.stand.right
         this.frames = 0
         this.grounded = false
+        this.mirar = 'de'
     }
 
     draw() {
@@ -122,23 +122,6 @@ function animate() {
     platforms.forEach( (platform) => {platform.draw()} )
     player.update()
 
-    if (keys.right.pressed && player.position.x < (700 - player.width)) {player.velocity.x = player.speed}
-    else if (
-        (keys.left.pressed && player.position.x > 100) || 
-        (keys.left.pressed && scrollOffset === 0 && player.position.x > 0 )) {player.velocity.x = -player.speed}
-    else {
-        player.velocity.x = 0
-        if (keys.right.pressed) {
-            scrollOffset += player.speed
-            platforms.forEach( (platform) => {platform.position.x -= player.speed} )
-            genericObj.forEach( (obj) => {obj.position.x -= player.speed * 0.6} )
-        } else if (keys.left.pressed && scrollOffset > 0) {
-            scrollOffset -= player.speed
-            platforms.forEach( (platform) => {platform.position.x += player.speed} )
-            genericObj.forEach( (obj) => {obj.position.x += player.speed * 0.6} )
-        }
-    }
-
     //collision
     platforms.forEach((platform) => {
         if (
@@ -152,25 +135,36 @@ function animate() {
         } 
     })
 
+    gestiona_m ()
+    gestiona_s()
+
     if (scrollOffset > 1500) {
-        c.font = '30px Arial'
+        c.font = '35px Arial'
         c.fillStyle = 'red'
         c.fillText('you win', 380, 300)
     }
     if (player.position.y > canvas.height) {
-        /*
-        c.font = '30px Arial'
-        c.fillText('you lose', 300, 300)
-        setTimeout(() => init(), 1000)
-        */
         init()
     }
-    gestiona_s()
 }
 
 init()
 animate()
 
+function keyDownUp(event) {
+	event.preventDefault()
+	var state = event.type == 'keydown'
+	switch (event.keyCode) {
+		case 65: keys.left.pressed = state 
+        break
+		case 68: keys.right.pressed = state 
+        break
+		case 32: keys.jump.pressed = state
+	}
+}
+window.addEventListener('keydown', keyDownUp)
+window.addEventListener('keyup', keyDownUp)
+/*
 window.addEventListener('keydown', ({keyCode}) => {
     switch (keyCode) {
         case 65 :
@@ -201,28 +195,44 @@ window.addEventListener('keyup', ({keyCode}) => {
             break
     }
 })
-
-var orientacion = 'de'
-function gestiona_s () {
+*/
+function gestiona_m () {
+    if (keys.right.pressed && player.position.x < (700 - player.width)) {player.velocity.x = player.speed}
+    else if (
+        (keys.left.pressed && player.position.x > 100) || 
+        (keys.left.pressed && scrollOffset === 0 && player.position.x > 0 )) {player.velocity.x = -player.speed}
+    else {
+        player.velocity.x = 0
+        if (keys.right.pressed) {
+            scrollOffset += player.speed
+            platforms.forEach( (platform) => {platform.position.x -= player.speed} )
+            genericObj.forEach( (obj) => {obj.position.x -= player.speed * 0.6} )
+        } else if (keys.left.pressed && scrollOffset > 0) {
+            scrollOffset -= player.speed
+            platforms.forEach( (platform) => {platform.position.x += player.speed} )
+            genericObj.forEach( (obj) => {obj.position.x += player.speed * 0.6} )
+        }
+    }
     if (keys.jump.pressed) {
         if (player.grounded) {
             player.grounded = false
             player.velocity.y -= 13
         }
     }
-
+}
+function gestiona_s () {
     if (keys.left.pressed) {
-        orientacion = 'iz'
+        player.mirar = 'iz'
         player.currentSprite = player.sprites.run.left
     }
     else if (keys.right.pressed) {
-        orientacion = 'de'
+        player.mirar = 'de'
         player.currentSprite = player.sprites.run.right
     }
     else if (!keys.left.pressed && !keys.right.pressed) {
-        if (orientacion == 'iz') {
+        if (player.mirar == 'iz') {
             player.currentSprite = player.sprites.stand.left;
-        } else if (orientacion == 'de') {
+        } else if (player.mirar == 'de') {
             player.currentSprite = player.sprites.stand.right;
         }
     }
