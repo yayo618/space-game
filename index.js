@@ -39,6 +39,7 @@ class Player {
         this.sprites = {stand: {right: i_sSR, left: i_sSL}, run: {right: i_sRR, left: i_sRL}}
         this.currentSprite = this.sprites.stand.right
         this.frames = 0
+        this.grounded = false
     }
 
     draw() {
@@ -145,8 +146,9 @@ function animate() {
             player.position.y + player.height + player.velocity.y >= platform.position.y &&
             player.position.x + player.width >= platform.position.x &&
             player.position.x <= platform.position.x + platform.width
-        ) 
-        {player.velocity.y = 0
+        ) {
+            player.grounded = true
+            player.velocity.y = 0
         } 
     })
 
@@ -203,7 +205,10 @@ window.addEventListener('keyup', ({keyCode}) => {
 var orientacion = 'de'
 function gestiona_s () {
     if (keys.jump.pressed) {
-        player.velocity.y -= 2
+        if (player.grounded) {
+            player.grounded = false
+            player.velocity.y -= 13
+        }
     }
 
     if (keys.left.pressed) {
