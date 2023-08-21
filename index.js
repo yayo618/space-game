@@ -21,9 +21,17 @@ i_sSL.src = 'assets/sSL.png'
 i_sSR.src = 'assets/sSR.png'
 
 const gravity = 0.5
-const s_jump = new Audio()
-s_jump.src = 'sounds/cartoon-jump-6462.mp3'
+var sound = new Howl({
+  src: ['sounds/cartoon-jump-6462.mp3']
+})
+
+/*
+const audioCtx = new AudioContext()
+const sound_jump = new Audio('sounds/cartoon-jump-6462.mp3')
 //const s_j = document.getElementById('audJ')
+const track = audioCtx.createMediaElementSource(sound_jump)
+track.connect(audioCtx.destination)
+*/
 
 class Player {
     constructor() {
@@ -189,7 +197,8 @@ function gestiona_m () {
         if (player.grounded) {
             player.grounded = false
             player.velocity.y -= 13
-            s_jump.play()//sound
+            //sound_jump.play()//sound
+            sound.play()
         }
     }
 }
