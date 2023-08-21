@@ -21,10 +21,14 @@ i_sSL.src = 'assets/sSL.png'
 i_sSR.src = 'assets/sSR.png'
 
 const gravity = 0.5
-var sound = new Howl({
-  src: ['sounds/cartoon-jump-6462.mp3']
-})
 
+var songs = {
+    jump:  new Howl({src: ['sounds/cartoon-jump-6462.mp3']}),
+    death: new Howl({src: ['sounds/negative_beeps-6008.mp3']}),
+    music: new Howl({src: ['sounds/calm_game_music_1-49209.mp3']})
+}
+
+songs.music.play()
 /*
 const audioCtx = new AudioContext()
 const sound_jump = new Audio('sounds/cartoon-jump-6462.mp3')
@@ -156,6 +160,7 @@ function animate() {
     }
     if (player.position.y > canvas.height) {
         init()
+        songs.death.play()
     }
 }
 
@@ -198,7 +203,7 @@ function gestiona_m () {
             player.grounded = false
             player.velocity.y -= 13
             //sound_jump.play()//sound
-            sound.play()
+            songs.jump.play()
         }
     }
 }
