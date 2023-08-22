@@ -25,7 +25,7 @@ const gravity = 0.5
 var songs = {
     jump:  new Howl({src: ['sounds/cartoon-jump-6462.mp3']}),
     death: new Howl({src: ['sounds/negative_beeps-6008.mp3']}),
-    music: new Howl({src: ['sounds/calm_game_music_1-49209.mp3']})
+    music: new Howl({src: ['sounds/calm_music.mp3'], loop: true})
 }
 
 songs.music.play()
@@ -224,3 +224,19 @@ function gestiona_s () {
         }
     }
 }
+
+const out = document.getElementById('out')
+const vol = document.getElementById('volume')
+out.textContent = vol.value * 100
+vol.addEventListener("input", (e) => {
+    Howler.volume(e.target.value)
+    out.textContent = e.target.value * 100
+})
+const power_vol = document.getElementById('power-vol')
+power_vol.addEventListener("click", () => {
+    if (songs.music.playing()) {
+    songs.music.pause()
+    } else {
+    songs.music.play()
+    }
+})
