@@ -33,6 +33,7 @@ const gravity = 0.5
 var songs = {
     jump:  new Howl({src: ['sounds/cartoon-jump-6462.mp3']}),
     death: new Howl({src: ['sounds/negative_beeps-6008.mp3']}),
+    succes:new Howl({src: ['sounds/correct-2-46134.mp3']}),
     music: new Howl({src: ['sounds/calm_music.mp3'], loop: true})
 }
 songs.music.play()
@@ -85,10 +86,10 @@ class Enemy extends Platform {
             0,
             109,
             89,
-            this.position.x, 
-            this.position.y, 
-            this.width, 
-            this.height
+            this.position.x - 15, 
+            this.position.y - 10, 
+            this.width + 30, 
+            this.height + 20
         )
     }
     update() {
@@ -194,9 +195,9 @@ function init() {
         new GenericObject({x: 2000, y: 18}, i_hill, 550, 582)
     ]
     enemies = [
-        new Enemy({x: 908, y: 390}, {right: i_enemyR, left: i_enemyL}, 109, 89),
-        new Enemy({x: 1868, y: 290}, {right: i_enemyR, left: i_enemyL}, 109, 89),
-        new Enemy({x: 2408, y: 390}, {right: i_enemyR, left: i_enemyL}, 109, 89)
+        new Enemy({x: 908, y: 400}, {right: i_enemyR, left: i_enemyL}, 79, 69),
+        new Enemy({x: 1868, y: 300}, {right: i_enemyR, left: i_enemyL}, 79, 69),
+        new Enemy({x: 2408, y: 400}, {right: i_enemyR, left: i_enemyL}, 79, 69)
     ]
     red_col = [
         new Enemy_collider({x: 708, y: 415}, i_red_c, 60, 60), 
@@ -244,6 +245,7 @@ function animate() {
         c.font = '35px Arial'
         c.fillStyle = 'red'
         c.fillText('you win', 380, 300)
+        songs.succes.play()
     }
     if (player.position.y > canvas.height) {
         init()
