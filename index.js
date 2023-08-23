@@ -73,12 +73,15 @@ class Enemy_collider extends Platform {
 class Enemy extends Platform {
     constructor({x, y}, img, width, height) {
         super({x, y}, img, width, height)
-        this.speed = 3
+        this.speed = 2
+        this.currentSprite = this.sprite.left
+        this.frames = 0
+        this.slowFrames = 0
     }
     draw() {
         c.drawImage(
-            this.sprite, 
-            160,
+            this.currentSprite, 
+            160 * this.frames,
             0,
             160,
             119,
@@ -89,9 +92,16 @@ class Enemy extends Platform {
         )
     }
     update() {
+        this.slowFrames ++
+        if (this.slowFrames == 5) {
+            this.slowFrames = 0
+            this.frames ++
+        }
+        if (this.frames == 6) {this.frames = 0}
         this.position.x -= this.speed
         this.draw()
-
+        if (this.speed < 0) {this.currentSprite = this.sprite.right}
+        else {this.currentSprite = this.sprite.left}
     }
 }
 
@@ -106,7 +116,7 @@ class Player {
             x: 0,
             y: 0
         }
-        this.width = 128
+        this.width = 80
         this.height = 150
         this.sprites = {stand: {right: i_sSR, left: i_sSL}, run: {right: i_sRR, left: i_sRL}}
         this.currentSprite = this.sprites.stand.right
@@ -122,9 +132,9 @@ class Player {
             0,
             128,
             150,
-            this.position.x, 
+            this.position.x - 24, 
             this.position.y, 
-            this.width, 
+            this.width + 48, 
             this.height
         )
     }
@@ -136,6 +146,17 @@ class Player {
         this.position.y += this.velocity.y
 
         this.velocity.y += gravity
+
+        enemies.forEach( (en) => {
+            if (!(this.position.x >= en.position.x + en.width || 
+                  this.position.x + this.width <= en.position.x ||
+                  this.position.y >= en.position.y + en.height ||
+                  this.position.y + this.height <= en.position.y )) 
+            {
+                init()
+                songs.death.play()
+            }
+        })
     }
 }
 
@@ -157,8 +178,9 @@ function init() {
     player = new Player()
     platforms = [
         new Platform({x: 0, y: 475}, i_platform, 580, 125), 
+        new Platform({x: 808, y: 350}, i_smallT, 291, 227),
         new Platform({x: 579, y: 475}, i_platform, 580, 125),
-        new Platform({x: 1886, y: 375}, i_smallT, 291, 227),
+        new Platform({x: 1786, y: 375}, i_smallT, 291, 227),
         new Platform({x: 2277, y: 250}, i_smallT, 291, 227),
         new Platform({x: 1409, y: 475}, i_platform, 580, 125),
         new Platform({x: 1988, y: 475}, i_platform, 580, 125),
@@ -170,12 +192,15 @@ function init() {
         new GenericObject({x: 2000, y: 18}, i_hill, 550, 582)
     ]
     enemies = [
-        new Enemy({x: 1968, y: 316}, i_enemyL, 80, 59),
-        new Enemy({x: 2408, y: 416}, i_enemyL, 80, 59)
+        new Enemy({x: 908, y: 416}, {right: i_enemyR, left: i_enemyL}, 80, 59),
+        new Enemy({x: 1868, y: 316}, {right: i_enemyR, left: i_enemyL}, 80, 59),
+        new Enemy({x: 2408, y: 416}, {right: i_enemyR, left: i_enemyL}, 80, 59)
     ]
     red_col = [
-        new Enemy_collider({x: 1826, y: 315}, i_red_c, 60, 60), 
-        new Enemy_collider({x: 2177, y: 315}, i_red_c, 60, 60), 
+        new Enemy_collider({x: 708, y: 415}, i_red_c, 60, 60), 
+        new Enemy_collider({x: 1159, y: 415}, i_red_c, 60, 60), 
+        new Enemy_collider({x: 1726, y: 315}, i_red_c, 60, 60), 
+        new Enemy_collider({x: 2077, y: 315}, i_red_c, 60, 60), 
         new Enemy_collider({x: 2217, y: 415}, i_red_c, 60, 60),
         new Enemy_collider({x: 2568, y: 415}, i_red_c, 60, 60) 
     ]
@@ -192,7 +217,7 @@ function animate() {
     platforms.forEach( (platform) => {platform.draw()} )
     enemies.forEach( (en) => {en.update()} )
     red_col.forEach( (rc) => {
-        rc.draw()
+        //rc.draw()
         rc.collide_en()
     } )
     player.update()
@@ -294,13 +319,13 @@ const vol = document.getElementById('volume')
 out.textContent = vol.value * 100
 vol.addEventListener("input", (e) => {
     Howler.volume(e.target.value)
-    out.textContent = e.target.value * 100
+    out.textContent = Math.floor(e.target.value * 100)
 })
 const power_vol = document.getElementById('power-vol')
 power_vol.addEventListener("click", () => {
     if (songs.music.playing()) {
-    songs.music.pause()
+        songs.music.pause()
     } else {
-    songs.music.play()
+        songs.music.play()
     }
 })
