@@ -12,9 +12,9 @@ var i_smallT = new Image()
 i_smallT.src = 'assets/platformSmallTall.png'
 
 var i_enemyL = new Image()
-i_enemyL.src = 'assets/enemy_1_left.png'
+i_enemyL.src = 'assets/furr_mons_l.png'
 var i_enemyR = new Image()
-i_enemyR.src = 'assets/enemy_1_right.png'
+i_enemyR.src = 'assets/furr_mons_r.png'
 
 var i_sRL = new Image()
 var i_sRR = new Image()
@@ -81,10 +81,10 @@ class Enemy extends Platform {
     draw() {
         c.drawImage(
             this.currentSprite, 
-            160 * this.frames,
+            109 * this.frames,
             0,
-            160,
-            119,
+            109,
+            89,
             this.position.x, 
             this.position.y, 
             this.width, 
@@ -92,12 +92,14 @@ class Enemy extends Platform {
         )
     }
     update() {
+        /*
         this.slowFrames ++
         if (this.slowFrames == 5) {
             this.slowFrames = 0
             this.frames ++
-        }
-        if (this.frames == 6) {this.frames = 0}
+        }*/
+        this.frames ++
+        if (this.frames == 12) {this.frames = 0}
         this.position.x -= this.speed
         this.draw()
         if (this.speed < 0) {this.currentSprite = this.sprite.right}
@@ -192,9 +194,9 @@ function init() {
         new GenericObject({x: 2000, y: 18}, i_hill, 550, 582)
     ]
     enemies = [
-        new Enemy({x: 908, y: 416}, {right: i_enemyR, left: i_enemyL}, 80, 59),
-        new Enemy({x: 1868, y: 316}, {right: i_enemyR, left: i_enemyL}, 80, 59),
-        new Enemy({x: 2408, y: 416}, {right: i_enemyR, left: i_enemyL}, 80, 59)
+        new Enemy({x: 908, y: 390}, {right: i_enemyR, left: i_enemyL}, 109, 89),
+        new Enemy({x: 1868, y: 290}, {right: i_enemyR, left: i_enemyL}, 109, 89),
+        new Enemy({x: 2408, y: 390}, {right: i_enemyR, left: i_enemyL}, 109, 89)
     ]
     red_col = [
         new Enemy_collider({x: 708, y: 415}, i_red_c, 60, 60), 
