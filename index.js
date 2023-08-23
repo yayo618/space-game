@@ -10,8 +10,11 @@ var i_hill = new Image()
 i_hill.src = 'assets/hill.png'
 var i_smallT = new Image()
 i_smallT.src = 'assets/platformSmallTall.png'
+
 var i_enemyL = new Image()
 i_enemyL.src = 'assets/enemy_1_left.png'
+var i_enemyR = new Image()
+i_enemyR.src = 'assets/enemy_1_right.png'
 
 var i_sRL = new Image()
 var i_sRR = new Image()
@@ -23,7 +26,7 @@ i_sSL.src = 'assets/sSL.png'
 i_sSR.src = 'assets/sSR.png'
 
 var i_red_c = new Image()
-    i_red_c.src = 'assets/red-colider.png'
+i_red_c.src = 'assets/red-colider.png'
 
 const gravity = 0.5
 
@@ -32,15 +35,8 @@ var songs = {
     death: new Howl({src: ['sounds/negative_beeps-6008.mp3']}),
     music: new Howl({src: ['sounds/calm_music.mp3'], loop: true})
 }
-
 songs.music.play()
-/*
-const audioCtx = new AudioContext()
-const sound_jump = new Audio('sounds/cartoon-jump-6462.mp3')
-//const s_j = document.getElementById('audJ')
-const track = audioCtx.createMediaElementSource(sound_jump)
-track.connect(audioCtx.destination)
-*/
+
 class Platform {
     constructor({x, y}, img, width, height) {
         this.position = {x: x, y: y}
@@ -63,11 +59,21 @@ class Enemy_collider extends Platform {
     constructor({x, y}, img, width, height) {
         super({x, y}, img, width, height)
     }
+    collide_en () {
+        enemies.forEach( (en) => {
+            if (!(this.position.x >= en.position.x + en.width || 
+                this.position.x + this.width <= en.position.x)) 
+            {
+                en.speed *= -1 
+            }
+        })
+    }
 }
 
 class Enemy extends Platform {
     constructor({x, y}, img, width, height) {
         super({x, y}, img, width, height)
+        this.speed = 3
     }
     draw() {
         c.drawImage(
@@ -81,6 +87,11 @@ class Enemy extends Platform {
             this.width, 
             this.height
         )
+    }
+    update() {
+        this.position.x -= this.speed
+        this.draw()
+
     }
 }
 
@@ -179,8 +190,11 @@ function animate() {
 
     genericObj.forEach( (obj) => {obj.draw()})
     platforms.forEach( (platform) => {platform.draw()} )
-    enemies.forEach( (en) => {en.draw()} )
-    red_col.forEach( (rc) => {rc.draw()} )
+    enemies.forEach( (en) => {en.update()} )
+    red_col.forEach( (rc) => {
+        rc.draw()
+        rc.collide_en()
+    } )
     player.update()
 
     //collision
