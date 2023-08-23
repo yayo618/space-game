@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <meta charset="UTF-8">
-    <title>chris</title>
+    <title>space game</title>
     <style>
         body{
             margin:0;
@@ -15,17 +16,16 @@
             margin:30px;
         }
         #vol-control{
+            width:800px;
             justify-content:space-between;
             color:white;
         }
     </style>
     <script src="librerias/howler.js"></script>
-    <!--
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.1/howler.min.js" integrity="sha512-L6Z/YtIPQ7eU3BProP34WGU5yIRk7tNHk7vaC2dB1Vy1atz6wl9mCkTPPZ2Rn1qPr+vY2mZ9odZLdGYuaBk7dQ==" crossorigin="anonymous"></script>
-    -->
 </head>
 <body>
-    <div id=vol-control>
+    <div>
+        <div id=vol-control>
 			<input 
                 type="range" 
                 id="volume" 
@@ -35,12 +35,13 @@
                 value="1" 
                 step="0.01" />
 			<label for="volume">
-<p>Volumen: <output id="out"></output>%</p>
+                <p>Volumen: <output id="out"></output>%</p>
             </label>
 
 			<button id="power-vol" >
 				<span>Música On/Off</span>
 			</button>
+        </div>
 	</div>
     <div>
     <canvas id="game"></canvas>
@@ -50,8 +51,5 @@
     </div>
     <script src="index.js"></script>
     <script src="touch-control.js"></script>
-    <!--
-    <audio src="sounds/cartoon-jump-6462.mp3" id="audJ"></audio>
-    -->
 </body>
 </html>

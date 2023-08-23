@@ -10,6 +10,8 @@ var i_hill = new Image()
 i_hill.src = 'assets/hill.png'
 var i_smallT = new Image()
 i_smallT.src = 'assets/platformSmallTall.png'
+var i_aircraft = new Image()
+i_aircraft.src = 'assets/aircraft.png'
 
 var i_enemyL = new Image()
 i_enemyL.src = 'assets/furr_mons_l.png'
@@ -30,10 +32,11 @@ i_red_c.src = 'assets/red-colider.png'
 
 const gravity = 0.5
 
+var success_once = true
 var songs = {
     jump:  new Howl({src: ['sounds/cartoon-jump-6462.mp3']}),
     death: new Howl({src: ['sounds/negative_beeps-6008.mp3']}),
-    succes:new Howl({src: ['sounds/correct-2-46134.mp3']}),
+    success:new Howl({src: ['sounds/success-1-6297.mp3']}),
     music: new Howl({src: ['sounds/calm_music.mp3'], loop: true})
 }
 songs.music.play()
@@ -178,6 +181,7 @@ let red_col = []
 let scrollOffset = 0
 
 function init() {
+    success_once = true
     player = new Player()
     platforms = [
         new Platform({x: 0, y: 475}, i_platform, 580, 125), 
@@ -187,17 +191,19 @@ function init() {
         new Platform({x: 2277, y: 250}, i_smallT, 291, 227),
         new Platform({x: 1409, y: 475}, i_platform, 580, 125),
         new Platform({x: 1988, y: 475}, i_platform, 580, 125),
-        new Platform({x: 2923, y: 475}, i_platform, 580, 125)
+        new Platform({x: 2923, y: 475}, i_platform, 580, 125),
+        new Platform({x: 3203, y: 274}, i_aircraft, 251, 251)
     ]
     genericObj = [
         new GenericObject({x: 0, y: 18}, i_hill, 550, 582),
         new GenericObject({x: 1000, y: 18}, i_hill, 550, 582),
-        new GenericObject({x: 2000, y: 18}, i_hill, 550, 582)
+        new GenericObject({x: 2000, y: 18}, i_hill, 550, 582),
     ]
     enemies = [
         new Enemy({x: 908, y: 400}, {right: i_enemyR, left: i_enemyL}, 79, 69),
         new Enemy({x: 1868, y: 300}, {right: i_enemyR, left: i_enemyL}, 79, 69),
-        new Enemy({x: 2408, y: 400}, {right: i_enemyR, left: i_enemyL}, 79, 69)
+        new Enemy({x: 2390, y: 400}, {right: i_enemyR, left: i_enemyL}, 79, 69),
+        new Enemy({x: 2458, y: 175}, {right: i_enemyR, left: i_enemyL}, 79, 69)
     ]
     red_col = [
         new Enemy_collider({x: 708, y: 415}, i_red_c, 60, 60), 
@@ -241,12 +247,18 @@ function animate() {
     gestiona_m ()
     gestiona_s()
 
-    if (scrollOffset > 2900) {
+    if (scrollOffset > 2850) {
         c.font = '35px Arial'
         c.fillStyle = 'red'
         c.fillText('you win', 380, 300)
-        songs.succes.play()
+        
+        if (success_once){
+            songs.success.play()
+            success_once = false
+        }
+        
     }
+
     if (player.position.y > canvas.height) {
         init()
         songs.death.play()
@@ -265,6 +277,12 @@ function keyDownUp(event) {
 		case 68: keys.right.pressed = state 
         break
 		case 32: keys.jump.pressed = state
+        break
+		case 37: keys.left.pressed = state 
+        break
+		case 39: keys.right.pressed = state 
+        break
+		case 38: keys.jump.pressed = state
 	}
 }
 window.addEventListener('keydown', keyDownUp)
@@ -295,7 +313,7 @@ function gestiona_m () {
         if (player.grounded) {
             player.grounded = false
             player.velocity.y -= 13
-            //sound_jump.play()//sound
+            //sound
             songs.jump.play()
         }
     }

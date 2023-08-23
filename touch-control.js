@@ -76,7 +76,7 @@ const cnv = document.getElementById("touchC");
 const ctx = cnv.getContext("2d");
 cnv.width = 800;
 cnv.height = 150;
-ctx.fillStyle = "#ffffff";
+ctx.fillStyle = "#3d3d3d";
 ctx.fillRect(0, 0, cnv.width, cnv.height);
 
 for (i = buttons.length - 1; i > -1; -- i) {
